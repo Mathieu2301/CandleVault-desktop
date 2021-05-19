@@ -1,0 +1,35 @@
+{
+  "name": "candlevault-desktop",
+  "version": "1.0.0",
+  "description": "CandleVault desktop client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mathieu2301/CandleVault-desktop.git"
+  },
+  "keywords": [
+    "CandleVault",
+    "desktop",
+    "electron",
+    "client"
+  ],
+  "author": "Mathieu Colmon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mathieu2301/CandleVault-desktop/issues"
+  },
+  "homepage": "https://github.com/Mathieu2301/CandleVault-desktop#readme",
+  "dependencies": {
+    "dragula": "^3.7.3",
+    "electron": "^12.0.8",
+    "electron-tabs": "^0.15.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.2"
+  }
+}

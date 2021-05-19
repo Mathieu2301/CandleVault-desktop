@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CandleVault desktop</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Questrial:regular);
+
+      :root {
+        --color1: #ddd;
+        --color2: #131722;
+        --color3: #1e222d;
+        --color4: #434651;
+        --color5: #fe4282;
+        --color6: #fc6f0f;
+        --color7: #1a6dc5;
+        --color7-s: #208fe6;
+        --color8: #0da371;
+        --color8-s: #1ab581;
+        --font: #fff;
+        --lightFont: #e7e7e7;
+        --green: #0da371;
+        --yellow: #ecb317;
+        --orange: #fc6f0f;
+        --red: #e03737;
+      }
+
+      body {
+        margin: 0;
+        font-family: Questrial, Arial, sans-serif;
+        color: var(--lightFont);
+      }
+
+      body * {
+        user-select: none;
+        outline: none;
+      }
+
+      .etabs-tabgroup {
+        display: flex;
+        background-color: var(--color2);
+        align-items: center;
+      }
+
+      .etabs-tabs {
+        display: flex;
+        cursor: pointer;
+      }
+
+      .etabs-tab.visible {
+        background-color: var(--color3);
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        opacity: 0.7;
+      }
+
+      .etabs-tab.visible.active {
+        background-color: var(--color7);
+        opacity: 1;
+      }
+
+      button {
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      .etabs-tab-buttons, .etabs-buttons {
+        display: flex;
+        align-items: center;
+      }
+
+      .etabs-tab-button-close {
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+        font-size: 0;
+      }
+
+      .etabs-tab-button-new {
+        margin-left: 15px;
+        background-color: var(--color7-s);
+        height: 30px;
+        width: 30px;
+        border-radius: 30%;
+        line-height: 30px;
+        color: var(--lightFont);
+        font-size: 21px;
+      }
+
+      .etabs-tab-button-close:hover {
+        background-color: var(--color6);
+      }
+
+      .etabs-tab-button-new:hover {
+        background-color: var(--color8);
+      }
+
+      .etabs-views {
+        background-color: var(--color2);
+        height: calc(100vh - 40px);
+      }
+
+      .etabs-view {
+        height: calc(100% - 40px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="etabs-tabgroup">
+      <div class="etabs-tabs"></div>
+      <div class="etabs-buttons"></div>
+    </div>
+    <div class="etabs-views"></div>
+
+    <script>
+      require('./renderer.js');
+    </script>
+  </body>
+</html>
