@@ -1,9 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const { app, BrowserWindow } = require('electron');
+const { autoUpdater } = require('electron-updater');
 
 function createWindow() {
   const win = new BrowserWindow({
     title: 'CandleVault desktop client',
     autoHideMenuBar: true,
+    backgroundColor: '#131722',
     minWidth: 400,
     minHeight: 600,
     webPreferences: {
@@ -12,14 +15,11 @@ function createWindow() {
       contextIsolation: false,
     },
     show: false,
-    icon: 'icons/128.png',
+    icon: 'icon.ico',
   });
 
   win.loadFile('./index.html');
-
-  win.on('ready-to-show', () => {
-    win.maximize();
-  });
+  win.maximize();
 }
 
 app.whenReady().then(() => {
@@ -31,5 +31,12 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  autoUpdater.checkForUpdatesAndNotify().then(async (rs) => {
+    console.log('Updates', rs);
+    if (rs) {
+      await rs.downloadPromise();
+      autoUpdater.quitAndInstall();
+    }
+    if (process.platform !== 'darwin') app.quit();
+  });
 });

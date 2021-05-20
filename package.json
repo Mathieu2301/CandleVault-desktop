@@ -4,7 +4,9 @@
   "description": "CandleVault desktop client",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder build --win --publish never",
+    "deploy": "electron-builder build --win --publish always"
   },
   "repository": {
     "type": "git",
@@ -24,10 +26,12 @@
   "homepage": "https://github.com/Mathieu2301/CandleVault-desktop#readme",
   "dependencies": {
     "dragula": "^3.7.3",
-    "electron": "^12.0.8",
-    "electron-tabs": "^0.15.0"
+    "electron-tabs": "^0.15.0",
+    "electron-updater": "^4.3.9"
   },
   "devDependencies": {
+    "electron": "^12.0.9",
+    "electron-builder": "^22.10.5",
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.2"

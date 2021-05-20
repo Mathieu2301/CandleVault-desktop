@@ -1,13 +1,15 @@
+/* eslint-disable no-undef */
+window.desktopApp = true;
 const { ipcRenderer } = require('electron');
 
 const observer = new MutationObserver((mutations) => {
   mutations.forEach(() => {
-    ipcRenderer.sendToHost('title', document.title);
+    ipcRenderer.sendToHost('page', { title: document.title, URL: document.URL });
   });
 });
 
 ipcRenderer.on('getTitle', () => {
-  ipcRenderer.sendToHost('title', document.title);
+  ipcRenderer.sendToHost('page', { title: document.title, URL: document.URL });
 });
 
 window.onload = () => {

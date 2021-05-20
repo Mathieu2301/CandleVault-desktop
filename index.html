@@ -19,11 +19,15 @@
         --color8-s: #1ab581;
         --font: #fff;
         --lightFont: #e7e7e7;
-        --green: #0da371;
-        --yellow: #ecb317;
-        --orange: #fc6f0f;
-        --red: #e03737;
       }
+
+      ::-webkit-scrollbar { height: 5px }
+      ::-webkit-scrollbar-thumb {
+        background-color: var(--lightFont);
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover { background-color: var(--font) }
+      ::-webkit-scrollbar-thumb:active { background-color: var(--color7-s) }
 
       body {
         margin: 0;
@@ -34,12 +38,14 @@
       body * {
         user-select: none;
         outline: none;
+        box-sizing: border-box;
       }
 
       .etabs-tabgroup {
         display: flex;
         background-color: var(--color2);
         align-items: center;
+        overflow: overlay;
       }
 
       .etabs-tabs {
@@ -61,6 +67,10 @@
         opacity: 1;
       }
 
+      span.etabs-tab-icon {
+        margin-right: 7px;
+      }
+
       button {
         border: none;
         padding: 0;
@@ -74,28 +84,34 @@
       }
 
       .etabs-tab-button-close {
-        height: 10px;
-        width: 10px;
+        height: 16px;
+        width: 16px;
         border-radius: 50%;
         font-size: 0;
+        background-color: transparent;
+        background-position: center;
+        background-size: 51%;
+        background-repeat: no-repeat;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23ddd'%3E%3Cpath d='M61.2,50.5l32.1,32.1c3,3,3,7.7,0,10.7c-3,3-7.7,3-10.7,0L50.5,61.2L18.4,93.3c-3,3-7.7,3-10.7,0 c-3-3-3-7.7,0-10.7l32.1-32.1L7.7,18.4c-3-3-3-7.7,0-10.7s7.7-3,10.7,0l32.1,32.1L82.6,7.7c3-3,7.7-3,10.7,0c3,3,3,7.7,0,10.7 L61.2,50.5z'/%3E%3C/svg%3E");
       }
 
-      .etabs-tab-button-new {
-        margin-left: 15px;
+      .newTabBtn {
+        margin: 0 15px;
         background-color: var(--color7-s);
-        height: 30px;
-        width: 30px;
-        border-radius: 30%;
-        line-height: 30px;
+        height: 23px;
+        width: 23px;
+        border-radius: 50%;
+        line-height: 23px;
         color: var(--lightFont);
-        font-size: 21px;
+        font-size: 22px;
+        cursor: pointer;
       }
 
-      .etabs-tab-button-close:hover {
-        background-color: var(--color6);
+      .newTabBtn:hover {
+        background-color: #4d5261;
       }
 
-      .etabs-tab-button-new:hover {
+      #sessionSelect > div:hover {
         background-color: var(--color8);
       }
 
@@ -107,17 +123,64 @@
       .etabs-view {
         height: calc(100% - 40px);
       }
+
+      .gu-mirror { display: none !important }
+
+      #sessionSelect {
+        display: flex;
+        margin-left: auto;
+        font-size: 13px;
+      }
+
+      #sessionSelect > div {
+        margin: 5px;
+        height: 25px;
+        width: 25px;
+        padding-bottom: 2px;
+        padding-right: 1px;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: var(--color3);
+        cursor: pointer;
+      }
+
+      #sessionSelect > div.selected {
+        background-color: var(--color4);
+      }
     </style>
   </head>
   <body>
     <div class="etabs-tabgroup">
       <div class="etabs-tabs"></div>
-      <div class="etabs-buttons"></div>
+      <div class="newTabBtn" onclick="window.newTab()">＋</div>
+      <div id="sessionSelect">
+        <div id="ddd" onclick="setSession('ddd')" style="color:#ddd">⬤</div>
+        <div id="1ab581" onclick="setSession('1ab581')" style="color:#1ab581">⬤</div>
+        <div id="fc6f0f" onclick="setSession('fc6f0f')" style="color:#fc6f0f">⬤</div>
+        <div id="fe4282" onclick="setSession('fe4282')" style="color:#fe4282">⬤</div>
+        <div id="b942fe" onclick="setSession('b942fe')" style="color:#b942fe">⬤</div>
+      </div>
     </div>
     <div class="etabs-views"></div>
 
     <script>
       require('./renderer.js');
+
+      function updateSession(session) {
+        document.querySelectorAll('#sessionSelect > div').forEach((el) => {
+          if (el.id !== session) document.getElementById(el.id).className = '';
+        });
+        document.getElementById(session).className = 'selected';
+      }
+
+      updateSession(localStorage.getItem('selectedSession') || 'ddd');
+
+      function setSession(session) {
+        localStorage.setItem('selectedSession', session);
+        updateSession(session);
+      }
     </script>
   </body>
 </html>
