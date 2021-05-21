@@ -1,15 +1,20 @@
 /* eslint-disable no-undef */
+const fs = require('fs');
 const TabGroup = require('electron-tabs');
 const dragula = require('dragula');
 
 const savedTabs = {};
 
-Object.values(JSON.parse(localStorage.getItem('tabs') || '{}')).forEach((val, i) => {
-  savedTabs[i] = val;
-});
+if (fs.existsSync('./tabs.json')) {
+  Object.values(JSON.parse(
+    fs.readFileSync('./tabs.json', 'utf8') || '{}',
+  )).forEach((val, i) => {
+    savedTabs[i] = val;
+  });
+}
 
 function saveConfig() {
-  localStorage.setItem('tabs', JSON.stringify(savedTabs));
+  fs.writeFileSync('./tabs.json', JSON.stringify(savedTabs));
 }
 
 function genCircle(color = 'ddd') {

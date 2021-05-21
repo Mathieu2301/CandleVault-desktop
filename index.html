@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>CandleVault desktop</title>
+    <title>CandleVault Desktop</title>
     <style>
       @import url(https://fonts.googleapis.com/css?family=Questrial:regular);
 
@@ -69,13 +69,6 @@
 
       span.etabs-tab-icon {
         margin-right: 7px;
-      }
-
-      button {
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        margin-left: 10px;
       }
 
       .etabs-tab-buttons, .etabs-buttons {
@@ -149,6 +142,36 @@
       #sessionSelect > div.selected {
         background-color: var(--color4);
       }
+
+      button {
+        border: none;
+        cursor: pointer;
+        border-radius: 3px;
+        padding: 8px 13px;
+        background-color: var(--color8);
+        color: var(--lightFont);
+      }
+
+      #notification {
+        position: fixed;
+        bottom: 20px;
+        right: 40px;
+        width: 200px;
+        padding: 20px;
+        border-radius: 5px;
+        background-color: var(--color3);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .hidden {display: none }
+      #message {margin-top: 0 }
+
+      .notifButtons {
+        display: grid;
+        grid-template-columns: auto auto;
+        column-gap: 5px;
+        justify-content: right;
+      }
     </style>
   </head>
   <body>
@@ -165,6 +188,20 @@
     </div>
     <div class="etabs-views"></div>
 
+    <div id="notification" class="hidden">
+      <p id="message"></p>
+
+      <div class="notifButtons">
+        <button id="close-button"
+          onClick="closeNotification()"
+          style="background-color: var(--color4)">Close</button>
+  
+        <button id="restart-button"
+          onClick="restartApp()"
+          class="hidden">Restart</button>
+      </div>
+    </div>
+
     <script>
       require('./renderer.js');
 
@@ -180,6 +217,30 @@
       function setSession(session) {
         localStorage.setItem('selectedSession', session);
         updateSession(session);
+      }
+
+      const { ipcRenderer } = require('electron');
+      const notification = document.getElementById('notification');
+      const message = document.getElementById('message');
+      const restartButton = document.getElementById('restart-button');
+
+      ipcRenderer.on('update_available', () => {
+        message.innerText = 'A new update is available. Downloading now...';
+        notification.className = '';
+      });
+
+      ipcRenderer.on('update_downloaded', () => {
+        message.innerText = 'Update Downloaded. It will be installed on restart.';
+        restartButton.className = '';
+        notification.className = '';
+      });
+
+      function closeNotification() {
+        notification.className = 'hidden';
+      }
+
+      function restartApp() {
+        ipcRenderer.send('restart_app');
       }
     </script>
   </body>

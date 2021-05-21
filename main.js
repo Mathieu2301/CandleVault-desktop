@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
 
 function createWindow() {
@@ -20,6 +20,20 @@ function createWindow() {
 
   win.loadFile('./index.html');
   win.maximize();
+
+  autoUpdater.on('update-available', () => {
+    win.webContents.send('update_available');
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    win.webContents.send('update_downloaded');
+  });
+
+  ipcMain.on('restart_app', () => {
+    autoUpdater.quitAndInstall();
+  });
+
+  autoUpdater.checkForUpdatesAndNotify();
 }
 
 app.whenReady().then(() => {
@@ -31,12 +45,9 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-  autoUpdater.checkForUpdatesAndNotify().then(async (rs) => {
-    console.log('Updates', rs);
-    if (rs) {
-      await rs.downloadPromise();
-      autoUpdater.quitAndInstall();
-    }
-    if (process.platform !== 'darwin') app.quit();
-  });
+  if (process.platform !== 'darwin') app.quit();
+});
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
 });
